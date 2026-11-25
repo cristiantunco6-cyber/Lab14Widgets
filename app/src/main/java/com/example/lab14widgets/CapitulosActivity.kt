@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.glance.appwidget.updateAll
+import kotlinx.coroutines.launch
 
 val FondoDesecho = Color(0xFF0D0F0D)
 val TarjetaDesecho = Color(0xFF1B1F1B)
@@ -53,6 +56,7 @@ class CapitulosActivity : ComponentActivity() {
 @Composable
 fun PantallaCapitulos() {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var actual by remember { mutableIntStateOf(DesechoDatos.capituloActual(context)) }
 
     Column(
@@ -81,6 +85,7 @@ fun PantallaCapitulos() {
                         .clickable {
                             actual = indice
                             DesechoDatos.guardarCapitulo(context, indice)
+                            scope.launch { DesechoWidgetContent().updateAll(context) }
                         },
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = TarjetaDesecho),
