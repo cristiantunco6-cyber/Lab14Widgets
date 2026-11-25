@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Lab14Widgets</string>
+    <string name="desecho_widget_descripcion">Capítulo actual y amenaza de El Desecho</string>
 </resources>

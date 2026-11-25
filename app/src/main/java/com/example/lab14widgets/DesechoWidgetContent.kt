@@ -31,7 +31,9 @@ import androidx.glance.layout.width
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import androidx.glance.unit.ColorProvider
+import androidx.glance.color.ColorProvider
+
+private fun colorFijo(color: Color) = ColorProvider(day = color, night = color)
 
 class DesechoWidgetContent : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -62,28 +64,28 @@ class DesechoWidgetContent : GlanceAppWidget() {
                     text = "EL DESECHO",
                     modifier = GlanceModifier.defaultWeight(),
                     style = TextStyle(
-                        color = ColorProvider(Color(0xFFC62828)),
+                        color = colorFijo(Color(0xFFC62828)),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                 )
                 Text(
                     text = "● Amenaza: ${DesechoDatos.nivelAmenaza(indice)}",
-                    style = TextStyle(color = ColorProvider(Color(0xFF8BC34A)), fontSize = 12.sp)
+                    style = TextStyle(color = colorFijo(Color(0xFF8BC34A)), fontSize = 12.sp)
                 )
             }
             Spacer(GlanceModifier.height(6.dp))
             Text(
                 text = DesechoDatos.capitulos[indice],
                 style = TextStyle(
-                    color = ColorProvider(Color.White),
+                    color = colorFijo(Color.White),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
             )
             Text(
                 text = "Progreso: ${indice + 1} / $total",
-                style = TextStyle(color = ColorProvider(Color(0xFFB0B0B0)), fontSize = 12.sp)
+                style = TextStyle(color = colorFijo(Color(0xFFB0B0B0)), fontSize = 12.sp)
             )
             Spacer(GlanceModifier.height(10.dp))
             Row(modifier = GlanceModifier.fillMaxWidth()) {
@@ -92,8 +94,8 @@ class DesechoWidgetContent : GlanceAppWidget() {
                     onClick = actionRunCallback<AvanzarCapituloAction>(),
                     modifier = GlanceModifier.defaultWeight(),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = ColorProvider(Color(0xFFC62828)),
-                        contentColor = ColorProvider(Color.White)
+                        backgroundColor = colorFijo(Color(0xFFC62828)),
+                        contentColor = colorFijo(Color.White)
                     )
                 )
                 Spacer(GlanceModifier.width(8.dp))
@@ -102,8 +104,8 @@ class DesechoWidgetContent : GlanceAppWidget() {
                     onClick = actionStartActivity<CapitulosActivity>(),
                     modifier = GlanceModifier.defaultWeight(),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = ColorProvider(Color(0xFF33691E)),
-                        contentColor = ColorProvider(Color.White)
+                        backgroundColor = colorFijo(Color(0xFF33691E)),
+                        contentColor = colorFijo(Color.White)
                     )
                 )
             }
