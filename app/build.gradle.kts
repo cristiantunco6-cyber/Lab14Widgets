@@ -44,6 +44,14 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Soporte para AppWidgets con Glance
+    implementation("androidx.glance:glance-appwidget:1.1.0")
+    // Interoperabilidad con Material 3
+    implementation("androidx.glance:glance-material3:1.1.0")
+    // Interoperabilidad con Material 2
+    implementation("androidx.glance:glance-material:1.1.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
