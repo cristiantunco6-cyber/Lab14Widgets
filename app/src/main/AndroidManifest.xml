@@ -29,6 +29,11 @@
             android:exported="false"
             android:theme="@style/Theme.Lab14Widgets" />
 
+        <activity
+            android:name=".CapitulosActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Lab14Widgets" />
+
         <receiver
             android:name=".SimpleWidget"
             android:exported="true">
