@@ -1,6 +1,8 @@
 package com.example.lab14widgets
 
 import android.content.Context
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -13,6 +15,11 @@ import androidx.glance.LocalContext
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionStartActivity
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.state.updateAppWidgetState
+import androidx.glance.currentState
+import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.appWidgetBackground
@@ -36,6 +43,23 @@ import androidx.glance.color.ColorProvider
 private fun colorFijo(color: Color) = ColorProvider(day = color, night = color)
 
 class DesechoWidgetContent : GlanceAppWidget() {
+
+    override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
+
+    companion object {
+        val KEY_CAPITULO = intPreferencesKey("capitulo_actual")
+
+        suspend fun actualizarTodos(context: Context, indice: Int) {
+            val ids = GlanceAppWidgetManager(context).getGlanceIds(DesechoWidgetContent::class.java)
+            ids.forEach { id ->
+                updateAppWidgetState(context, id) { prefs ->
+                    prefs[KEY_CAPITULO] = indice
+                }
+                DesechoWidgetContent().update(context, id)
+            }
+        }
+    }
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
             ContenidoDesecho()
@@ -45,7 +69,8 @@ class DesechoWidgetContent : GlanceAppWidget() {
     @Composable
     private fun ContenidoDesecho() {
         val context = LocalContext.current
-        val indice = DesechoDatos.capituloActual(context)
+        val estado = currentState<Preferences>()
+        val indice = estado[KEY_CAPITULO] ?: DesechoDatos.capituloActual(context)
         val total = DesechoDatos.capitulos.size
 
         Column(
@@ -118,6 +143,6 @@ class AvanzarCapituloAction : ActionCallback {
         val actual = DesechoDatos.capituloActual(context)
         val siguiente = if (actual < DesechoDatos.capitulos.size - 1) actual + 1 else 0
         DesechoDatos.guardarCapitulo(context, siguiente)
-        DesechoWidgetContent().update(context, glanceId)
+        DesechoWidgetContent.actualizarTodos(context, siguiente)
     }
 }
